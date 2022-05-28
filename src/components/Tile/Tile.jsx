@@ -12,15 +12,17 @@ const Tile = props => {
 
   useEffect(() => {
     props.setRoundTiles(() => {
-      if (!props.placed) {
+      if (props.placed === 0) {
         return props.roundTiles.filter((_currentTile, _index) => {
           return (
             _currentTile.row !== props.row ||
             _currentTile.column !== props.column
           )
         })
-      } else {
+      } else if (props.placed === 1) {
         return [...props.roundTiles, {row: props.row, column: props.column}]
+      } else {
+        return [...props.roundTiles]
       }
     })
   }, [props.placed])
@@ -67,8 +69,9 @@ const Tile = props => {
 
   const handleClick = (_row, _column) => {
     if (
-      props.board[_row].find(_tile => _tile === true) &&
-      props.board[_row][_column] !== true
+      (props.board[_row].find(_tile => _tile === 1) &&
+        props.board[_row][_column] !== 1) ||
+      props.board[_row][_column] > 1
     ) {
       return null
     } else {
@@ -78,7 +81,7 @@ const Tile = props => {
           return _currentRow.map((_currentColumn, _index) => {
             if (_index === _column) {
               //console.log(_currentColumn)
-              return (_currentColumn = !_currentColumn)
+              return _currentColumn === 0 ? 1 : 0
             } else {
               return _currentColumn
             }
@@ -94,12 +97,12 @@ const Tile = props => {
 
   return (
     <StyledTile
+      currentRound={props.board[props.row][props.column] - 1}
       placed={props.placed}
       onClick={() => handleClick(props.row, props.column)}
-      src={imgSrc}
-      alt="blue"
-      draggable="false"
-    />
+    >
+      <img title={props.placed} src={imgSrc} alt="" draggable="false" />
+    </StyledTile>
   )
 }
 

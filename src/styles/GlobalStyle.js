@@ -10,8 +10,8 @@ export default createGlobalStyle`${css`
     }
 
     body {
-      background-color: #dfd3bc;
-      color: #d9f8ff;
+      background-color: #007ecc;
+      color: #1c2426;
 
       .App {
         min-height: 100vh;
@@ -24,7 +24,6 @@ export default createGlobalStyle`${css`
 
         .left-column {
           flex: 1 0 auto;
-          background-color: #1c2426;
         }
 
         .right-column {
@@ -61,6 +60,7 @@ export default createGlobalStyle`${css`
 
       h1,
       h2 {
+        font-family: 'Noto Sans', sans-serif;
         line-height: 1.2;
         font-weight: 700;
       }

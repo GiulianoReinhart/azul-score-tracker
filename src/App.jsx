@@ -7,22 +7,35 @@ function App() {
   let emptyBoard = []
 
   for (let i = 0; i < 5; i++) {
-    emptyBoard.push([false, false, false, false, false])
+    emptyBoard.push([0, 0, 0, 0, 0])
   }
 
   const [board, setBoard] = useState(emptyBoard)
   const [roundBoard, setRoundBoard] = useState(emptyBoard)
   const [currentRound, setCurrentRound] = useState(1)
   const [roundTiles, setRoundTiles] = useState([])
-  const [points, setPoints] = useState(0)
+  const [totalPoints, setTotalPoints] = useState(0)
+  const [roundPoints, setRoundPoints] = useState(0)
+  const [gameEnd, setGameEnd] = useState(false)
+  const [fullRows, setFullRows] = useState(0)
+  const [fullColumns, setFullColumns] = useState(0)
+  const [fullColours, setFullColours] = useState(0)
 
   useEffect(() => {
-    console.log(roundTiles)
     recalculatePoints(roundBoard, roundTiles)
   }, [roundTiles])
 
   useEffect(() => {
-    //console.log(board)
+    if (gameEnd) {
+      setTotalPoints(
+        _prevTotalPoints =>
+          _prevTotalPoints + fullRows * 2 + fullColumns * 7 + fullColours * 10
+      )
+    }
+  }, [gameEnd])
+
+  useEffect(() => {
+    console.log(board)
   }, [board])
 
   const checkBoundaries = (_row, _column) => {
@@ -34,14 +47,14 @@ function App() {
   }
 
   const recalculatePoints = (_board, _roundTiles) => {
-    setPoints(0)
+    setRoundPoints(0)
     let tempBoard = JSON.parse(JSON.stringify(_board))
     //console.log(_roundTiles)
     let sortedRoundTiles = _roundTiles.sort((a, b) => a.row - b.row)
     //console.log(sortedRoundTiles)
     sortedRoundTiles.forEach(tile => {
       //console.log(tile)
-      tempBoard[tile.row][tile.column] = !tempBoard[tile.row][tile.column]
+      tempBoard[tile.row][tile.column] = 1
       countPoints(tempBoard, tile.row, tile.column)
     })
   }
@@ -50,12 +63,10 @@ function App() {
     let tilePoints = 0
 
     if (!_board[_row][_column]) {
-      console.log('Tile not placed')
       return 0
     }
 
     if (!checkBoundaries(_row, _column)) {
-      console.log('Out of boundaries')
       return 0
     }
 
@@ -66,20 +77,17 @@ function App() {
       checkConections(_board, _row, _column, -1, 0) +
       checkConections(_board, _row, _column, 1, 0)
 
-    console.log('rowPoints: ' + rowPoints)
-    console.log('columnPoints: ' + columnPoints)
+    //console.log('rowPoints: ' + rowPoints)
+    //console.log('columnPoints: ' + columnPoints)
+
     if (rowPoints && columnPoints) {
-      console.log('Connections in both directions')
       tilePoints += 2
     } else {
-      console.log('Connection in one or no direction')
       tilePoints += 1
     }
 
     tilePoints += rowPoints + columnPoints
-    console.log('Calculation result: ' + tilePoints)
-    //setPoints(0)
-    setPoints(prevPoints => prevPoints + tilePoints)
+    setRoundPoints(_prevPoints => _prevPoints + tilePoints)
   }
 
   const checkConections = (_board, _row, _column, _incrRow, _incrColumn) => {
@@ -105,16 +113,107 @@ function App() {
     }
   }
 
+  const lockBoard = _roundNumber => {
+    let lockedBoard = board.map(_currentRow => {
+      return _currentRow.map(_currentColumn => {
+        if (_currentColumn === 1) {
+          //console.log(_currentColumn)
+          return (_currentColumn = _roundNumber + 1)
+        } else {
+          return _currentColumn
+        }
+      })
+    })
+
+    setBoard(lockedBoard)
+  }
+
+  const incrementRound = () => {
+    lockBoard(currentRound)
+    setCurrentRound(_prevRound => _prevRound + 1)
+    setRoundBoard(board)
+    setRoundTiles([])
+    setTotalPoints(_prevTotalPoints => _prevTotalPoints + roundPoints)
+    setRoundPoints(0)
+  }
+
+  const checkForFullRow = _row => {
+    setFullRows(_prevFullRows =>
+      board[_row].find(_tile => _tile === 0) === undefined
+        ? _prevFullRows + 1
+        : _prevFullRows
+    )
+  }
+
+  const checkForFullColumn = _column => {
+    for (let i = 0; i < 5; i++) {
+      if (board[i][_column] === 0) {
+        return
+      }
+    }
+
+    setFullColumns(_prevFullColumns => _prevFullColumns + 1)
+  }
+
+  const checkForFullColour = _tiles => {
+    for (let i = 0; i < 5; i++) {
+      if (board[i][_tiles[i]] === 0) {
+        return
+      }
+    }
+
+    setFullColours(_prevFullColours => _prevFullColours + 1)
+  }
+
+  const endGame = () => {
+    lockBoard(currentRound)
+    setGameEnd(true)
+
+    for (let i = 0; i < 5; i++) {
+      checkForFullRow(i)
+      checkForFullColumn(i)
+    }
+
+    let blackTiles = [3, 4, 0, 1, 2]
+    let blueTiles = [0, 1, 2, 3, 4]
+    let redTiles = [2, 3, 4, 0, 1]
+    let turquoiseTiles = [4, 0, 1, 2, 3]
+    let yellowTiles = [1, 2, 3, 4, 0]
+
+    checkForFullColour(blackTiles)
+    checkForFullColour(blueTiles)
+    checkForFullColour(redTiles)
+    checkForFullColour(turquoiseTiles)
+    checkForFullColour(yellowTiles)
+
+    setTotalPoints(
+      _prevTotalPoints =>
+        _prevTotalPoints + roundPoints + fullRows + fullColumns + fullColours
+    )
+  }
+
   return (
     <div className="App">
       <GlobalStyle />
       <div className="column left-column">
         <h1>Azul Score Tracker</h1>
-        <p>Points this round: XX</p>
-        <p>Total points: {points}</p>
+        <p>Round points: {roundPoints}</p>
+        <p>Total points: {totalPoints}</p>
         <div>
-          <button>First round</button>
-          <button>Add round</button>
+          <p>Current round: {currentRound}</p>
+          <button onClick={incrementRound}>Add round</button>
+          <button onClick={endGame}>Finish last round</button>
+          <p>
+            Row bonus: {fullRows} full rows, {fullRows * 2} extra points
+          </p>
+          <p>
+            Column bonus: {fullColumns} full columns, {fullColumns * 7} extra
+            points
+          </p>
+          <p>
+            Colour bonus: {fullColours} full colours, {fullColours * 10} extra
+            points
+          </p>
         </div>
       </div>
       <div className="column right-column">
@@ -126,7 +225,7 @@ function App() {
           roundTiles={roundTiles}
           setRoundTiles={setRoundTiles}
           recalculatePoints={recalculatePoints}
-          setPoints={setPoints}
+          gameEnd={gameEnd}
         />
       </div>
     </div>

@@ -3,7 +3,7 @@ import Tile from '../Tile/Tile'
 
 const Board = props => {
   return (
-    <StyledBoard>
+    <StyledBoard gameEnd={props.gameEnd}>
       {props.board.map((_row, _index) => {
         let rowCount = _index
 
@@ -23,7 +23,6 @@ const Board = props => {
               roundTiles={props.roundTiles}
               setRoundTiles={props.setRoundTiles}
               recalculatePoints={props.recalculatePoints}
-              setPoints={props.setPoints}
             />
           )
         })
