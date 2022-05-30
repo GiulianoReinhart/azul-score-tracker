@@ -3,7 +3,7 @@ import {motion, AnimatePresence} from 'framer-motion'
 
 const Stats = props => {
   return (
-    <StyledStats>
+    <StyledStats gameEnd={props.gameEnd}>
       <AnimatePresence initial={false} exitBeforeEnter>
         {!props.gameEnd ? (
           <motion.div
@@ -34,6 +34,7 @@ const Stats = props => {
         ) : (
           <motion.div
             key="after-game"
+            className="wide-grid"
             initial={{opacity: 0}}
             animate={{opacity: 1}}
             exit={{opacity: 0}}

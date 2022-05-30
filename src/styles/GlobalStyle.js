@@ -51,8 +51,8 @@ export default createGlobalStyle`${css`
         }
 
         .logo {
-          display: block;
-          height: 10rem;
+          width: 20rem;
+          max-width: 100%;
         }
 
         .column {
@@ -82,12 +82,6 @@ export default createGlobalStyle`${css`
 
         @media (max-width: 1023px) {
           flex-direction: column;
-
-          .logo {
-            height: auto;
-            width: 20rem;
-            max-width: 100%;
-          }
 
           .column {
             width: 100%;
@@ -127,7 +121,7 @@ export default createGlobalStyle`${css`
       ul,
       li,
       button {
-        font-size: 20px;
+        font-size: 18px;
         line-height: 1.5;
       }
 
@@ -155,7 +149,7 @@ export default createGlobalStyle`${css`
 
       strong {
         line-height: 1;
-        font-size: 5rem;
+        font-size: 4rem;
         font-weight: 700;
       }
 

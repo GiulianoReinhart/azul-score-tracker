@@ -6,12 +6,17 @@ export const StyledStats = styled.section`
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
 
+    &.wide-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
     > * {
       border-radius: 1rem;
       padding: 2rem 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 6rem;
 
       &.double-size {
         grid-column: span 2;
