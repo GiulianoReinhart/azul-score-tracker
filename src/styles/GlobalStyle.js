@@ -24,14 +24,23 @@ export default createGlobalStyle`${css`
 
         .left-column {
           flex: 1 0 auto;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: flex-start;
+          padding: 50px;
         }
 
         .right-column {
+          position: relative;
           display: flex;
           justify-content: center;
-          align-items: center;
-          flex: 0 0 100vh;
-          background-color: #d9f8ff;
+          align-items: flex-end;
+          flex-direction: column;
+          flex: 0 1 100vh;
+          grid-gap: 10px;
+          //background-color: #d9f8ff;
+          padding: 50px;
         }
 
         @media (max-width: 1024px) {

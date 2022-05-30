@@ -1,4 +1,5 @@
 import Board from './components/Board/Board'
+import FloorRow from './components/FloorRow/FloorRow'
 import './styles/reset.scss'
 import {useEffect, useState} from 'react'
 import GlobalStyle from './styles/GlobalStyle'
@@ -20,9 +21,21 @@ function App() {
   const [fullRows, setFullRows] = useState(0)
   const [fullColumns, setFullColumns] = useState(0)
   const [fullColours, setFullColours] = useState(0)
+  const [minusPoints, setMinusPoints] = useState(0)
+  const [activeMinusTiles, setActiveMinusTiles] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ])
 
   useEffect(() => {
-    recalculatePoints(roundBoard, roundTiles)
+    if (!gameEnd) {
+      recalculatePoints(roundBoard, roundTiles)
+    }
   }, [roundTiles])
 
   useEffect(() => {
@@ -35,8 +48,18 @@ function App() {
   }, [gameEnd])
 
   useEffect(() => {
-    console.log(board)
-  }, [board])
+    let pointSum = 0
+    let indexOfLastTrue = activeMinusTiles.lastIndexOf(true)
+    let minusPointArray = [-1, -1, -2, -2, -2, -3, -3]
+
+    if (indexOfLastTrue !== -1) {
+      for (let i = 0; i <= indexOfLastTrue; i++) {
+        pointSum += minusPointArray[i]
+      }
+    }
+
+    setMinusPoints(pointSum)
+  }, [activeMinusTiles])
 
   const checkBoundaries = (_row, _column) => {
     if (_row > 4 || _row < 0 || _column > 4 || _column < 0) {
@@ -133,7 +156,15 @@ function App() {
     setCurrentRound(_prevRound => _prevRound + 1)
     setRoundBoard(board)
     setRoundTiles([])
-    setTotalPoints(_prevTotalPoints => _prevTotalPoints + roundPoints)
+    setTotalPoints(_prevTotalPoints => {
+      let finalPoints = _prevTotalPoints + roundPoints + minusPoints
+      if (finalPoints < 0) {
+        return 0
+      }
+      return finalPoints
+    })
+    setActiveMinusTiles(activeMinusTiles.map(tile => (tile = false)))
+    setMinusPoints(0)
     setRoundPoints(0)
   }
 
@@ -166,8 +197,8 @@ function App() {
   }
 
   const endGame = () => {
-    lockBoard(currentRound)
     setGameEnd(true)
+    lockBoard(currentRound)
 
     for (let i = 0; i < 5; i++) {
       checkForFullRow(i)
@@ -186,45 +217,74 @@ function App() {
     checkForFullColour(turquoiseTiles)
     checkForFullColour(yellowTiles)
 
-    setTotalPoints(
-      _prevTotalPoints =>
-        _prevTotalPoints + roundPoints + fullRows + fullColumns + fullColours
-    )
+    setTotalPoints(_prevTotalPoints => {
+      if (_prevTotalPoints + roundPoints + minusPoints < 0) {
+        return 0
+      }
+
+      return _prevTotalPoints + roundPoints + minusPoints
+    })
+
+    setTotalPoints(_prevTotalPoints => {
+      let finalPoints =
+        _prevTotalPoints +
+        roundPoints +
+        fullRows +
+        fullColumns +
+        fullColours +
+        minusPoints
+
+      if (finalPoints < 0) {
+        return 0
+      }
+
+      return finalPoints
+    })
+
+    setMinusPoints(0)
+    setRoundPoints(0)
   }
 
   return (
     <div className="App">
       <GlobalStyle />
       <div className="column left-column">
-        <h1>Azul Score Tracker</h1>
-        <p>Round points: {roundPoints}</p>
-        <p>Total points: {totalPoints}</p>
-        <div>
-          <p>Current round: {currentRound}</p>
-          <button onClick={incrementRound}>Add round</button>
-          <button onClick={endGame}>Finish last round</button>
+        <section>
+          <h1>Azul Score Tracker</h1>
           <p>
-            Row bonus: {fullRows} full rows, {fullRows * 2} extra points
+            Round points:{' '}
+            {roundPoints + minusPoints < 0 ? 0 : roundPoints + minusPoints}
           </p>
-          <p>
-            Column bonus: {fullColumns} full columns, {fullColumns * 7} extra
-            points
-          </p>
-          <p>
-            Colour bonus: {fullColours} full colours, {fullColours * 10} extra
-            points
-          </p>
-        </div>
+          <p>Total points: {totalPoints}</p>
+          <div>
+            <p>Current round: {currentRound}</p>
+            <button onClick={incrementRound}>Add round</button>
+            <button onClick={endGame}>Finish last round</button>
+            <p>
+              Row bonus: {fullRows} full rows, {fullRows * 2} extra points
+            </p>
+            <p>
+              Column bonus: {fullColumns} full columns, {fullColumns * 7} extra
+              points
+            </p>
+            <p>
+              Colour bonus: {fullColours} full colours, {fullColours * 10} extra
+              points
+            </p>
+          </div>
+        </section>
+        <FloorRow
+          gameEnd={gameEnd}
+          activeMinusTiles={activeMinusTiles}
+          setActiveMinusTiles={setActiveMinusTiles}
+        />
       </div>
       <div className="column right-column">
         <Board
           board={board}
           setBoard={setBoard}
-          currentRound={currentRound}
-          countPoints={countPoints}
           roundTiles={roundTiles}
           setRoundTiles={setRoundTiles}
-          recalculatePoints={recalculatePoints}
           gameEnd={gameEnd}
         />
       </div>

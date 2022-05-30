@@ -18,11 +18,8 @@ const Board = props => {
               column={columnCount}
               board={props.board}
               setBoard={props.setBoard}
-              currentRound={props.currentRound}
-              countPoints={props.countPoints}
               roundTiles={props.roundTiles}
               setRoundTiles={props.setRoundTiles}
-              recalculatePoints={props.recalculatePoints}
             />
           )
         })
