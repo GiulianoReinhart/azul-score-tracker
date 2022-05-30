@@ -1,8 +1,12 @@
+import Stats from './components/Stats/Stats'
 import Board from './components/Board/Board'
 import FloorRow from './components/FloorRow/FloorRow'
 import './styles/reset.scss'
 import {useEffect, useState} from 'react'
 import GlobalStyle from './styles/GlobalStyle'
+import backgroundImage from './images/background.svg'
+import logo from './images/logo.svg'
+import {motion} from 'framer-motion'
 
 function App() {
   let emptyBoard = []
@@ -248,38 +252,45 @@ function App() {
   return (
     <div className="App">
       <GlobalStyle />
-      <div className="column left-column">
-        <section>
-          <h1>Azul Score Tracker</h1>
-          <p>
-            Round points:{' '}
-            {roundPoints + minusPoints < 0 ? 0 : roundPoints + minusPoints}
-          </p>
-          <p>Total points: {totalPoints}</p>
-          <div>
-            <p>Current round: {currentRound}</p>
-            <button onClick={incrementRound}>Add round</button>
-            <button onClick={endGame}>Finish last round</button>
-            <p>
-              Row bonus: {fullRows} full rows, {fullRows * 2} extra points
-            </p>
-            <p>
-              Column bonus: {fullColumns} full columns, {fullColumns * 7} extra
-              points
-            </p>
-            <p>
-              Colour bonus: {fullColours} full colours, {fullColours * 10} extra
-              points
-            </p>
-          </div>
-        </section>
+      <motion.img
+        className="bg-image"
+        src={backgroundImage}
+        alt=""
+        initial={{opacity: 0}}
+        animate={{opacity: 0.1}}
+        transition={{delay: 0.2}}
+      ></motion.img>
+      <motion.div
+        className="column left-column"
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+        transition={{delay: 0.4}}
+      >
+        <img className="logo" src={logo} alt="" />
+        <Stats
+          roundPoints={roundPoints}
+          minusPoints={minusPoints}
+          totalPoints={totalPoints}
+          currentRound={currentRound}
+          incrementRound={incrementRound}
+          endGame={endGame}
+          gameEnd={gameEnd}
+          fullRows={fullRows}
+          fullColumns={fullColumns}
+          fullColours={fullColours}
+        />
         <FloorRow
           gameEnd={gameEnd}
           activeMinusTiles={activeMinusTiles}
           setActiveMinusTiles={setActiveMinusTiles}
         />
-      </div>
-      <div className="column right-column">
+      </motion.div>
+      <motion.div
+        className="column right-column"
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+        transition={{delay: 0.6}}
+      >
         <Board
           board={board}
           setBoard={setBoard}
@@ -287,7 +298,7 @@ function App() {
           setRoundTiles={setRoundTiles}
           gameEnd={gameEnd}
         />
-      </div>
+      </motion.div>
     </div>
   )
 }

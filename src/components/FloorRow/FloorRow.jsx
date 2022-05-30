@@ -24,18 +24,21 @@ const FloorRow = props => {
 
   return (
     <StyledFloorRow gameEnd={props.gameEnd}>
-      {minusPointArray.map((item, index) => (
-        <StyledFloorTile
-          key={index}
-          active={props.activeMinusTiles[index]}
-          tileCount={index}
-          onClick={() => {
-            updateActiveTiles(index)
-          }}
-        >
-          {item}
-        </StyledFloorTile>
-      ))}
+      <p>Minus Points</p>
+      <div className="floor-row-wrapper">
+        {minusPointArray.map((item, index) => (
+          <StyledFloorTile
+            key={index}
+            active={props.activeMinusTiles[index]}
+            tileCount={index}
+            onClick={() => {
+              updateActiveTiles(index)
+            }}
+          >
+            {item}
+          </StyledFloorTile>
+        ))}
+      </div>
     </StyledFloorRow>
   )
 }
