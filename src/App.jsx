@@ -5,8 +5,16 @@ import './styles/reset.scss'
 import {useEffect, useState} from 'react'
 import GlobalStyle from './styles/GlobalStyle'
 import backgroundImage from './images/background.svg'
-import logo from './images/logo.svg'
 import {motion} from 'framer-motion'
+import UpdateModal from './components/UpdateModal/UpdateModal'
+import {useCookies} from 'react-cookie'
+import styled, {ThemeProvider} from 'styled-components'
+import {theme} from './styles/theme'
+import {ReactComponent as SvgLogo} from './images/logo.svg'
+
+const StyledLogo = styled(SvgLogo)`
+  fill: ${props => props.theme.light};
+`
 
 function App() {
   let emptyBoard = []
@@ -15,6 +23,20 @@ function App() {
     emptyBoard.push([0, 0, 0, 0, 0])
   }
 
+  let version = 1.1
+
+  const changeTheme = () => {
+    if (themeColour === 4) {
+      setThemeColour(0)
+    } else {
+      setThemeColour(prevThemeColour => prevThemeColour + 1)
+    }
+  }
+
+  useEffect(() => console.log(themeColour), [])
+  const [themeColour, setThemeColour] = useState(0)
+  const [cookies, setCookie] = useCookies(['app'])
+  const [modal, setModal] = useState(false)
   const [board, setBoard] = useState(emptyBoard)
   const [roundBoard, setRoundBoard] = useState(emptyBoard)
   const [currentRound, setCurrentRound] = useState(1)
@@ -35,6 +57,12 @@ function App() {
     false,
     false
   ])
+
+  useEffect(() => {
+    if (!cookies['version'] || cookies['version'] != version) {
+      setModal(true)
+    }
+  }, [])
 
   useEffect(() => {
     if (!gameEnd) {
@@ -222,14 +250,6 @@ function App() {
     checkForFullColour(yellowTiles)
 
     setTotalPoints(_prevTotalPoints => {
-      if (_prevTotalPoints + roundPoints + minusPoints < 0) {
-        return 0
-      }
-
-      return _prevTotalPoints + roundPoints + minusPoints
-    })
-
-    setTotalPoints(_prevTotalPoints => {
       let finalPoints =
         _prevTotalPoints +
         roundPoints +
@@ -250,56 +270,70 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <GlobalStyle />
-      <motion.img
-        className="bg-image"
-        src={backgroundImage}
-        alt=""
-        initial={{opacity: 0}}
-        animate={{opacity: 0.1}}
-        transition={{delay: 0.2}}
-      ></motion.img>
-      <motion.div
-        className="column left-column"
-        initial={{opacity: 0}}
-        animate={{opacity: 1}}
-        transition={{delay: 0.4}}
-      >
-        <img className="logo" src={logo} alt="" />
-        <Stats
-          roundPoints={roundPoints}
-          minusPoints={minusPoints}
-          totalPoints={totalPoints}
-          currentRound={currentRound}
-          incrementRound={incrementRound}
-          endGame={endGame}
-          gameEnd={gameEnd}
-          fullRows={fullRows}
-          fullColumns={fullColumns}
-          fullColours={fullColours}
-        />
-        <FloorRow
-          gameEnd={gameEnd}
-          activeMinusTiles={activeMinusTiles}
-          setActiveMinusTiles={setActiveMinusTiles}
-        />
-      </motion.div>
-      <motion.div
-        className="column right-column"
-        initial={{opacity: 0}}
-        animate={{opacity: 1}}
-        transition={{delay: 0.6}}
-      >
-        <Board
-          board={board}
-          setBoard={setBoard}
-          roundTiles={roundTiles}
-          setRoundTiles={setRoundTiles}
-          gameEnd={gameEnd}
-        />
-      </motion.div>
-    </div>
+    <ThemeProvider theme={theme[themeColour]}>
+      <div className="App">
+        <GlobalStyle themeColour={themeColour} />
+        {modal && (
+          <UpdateModal
+            version={version}
+            setCookie={setCookie}
+            modal={modal}
+            setModal={setModal}
+            themeColour={themeColour}
+          />
+        )}
+        <motion.img
+          className="bg-image"
+          src={backgroundImage}
+          alt=""
+          initial={{opacity: 0}}
+          animate={{opacity: 0.1}}
+          transition={{delay: 0.2}}
+        ></motion.img>
+        <motion.div
+          className="column left-column"
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          transition={{delay: 0.4}}
+        >
+          <StyledLogo onClick={changeTheme} className="logo" />
+          <Stats
+            roundPoints={roundPoints}
+            minusPoints={minusPoints}
+            totalPoints={totalPoints}
+            currentRound={currentRound}
+            incrementRound={incrementRound}
+            endGame={endGame}
+            gameEnd={gameEnd}
+            fullRows={fullRows}
+            fullColumns={fullColumns}
+            fullColours={fullColours}
+          />
+          <FloorRow
+            gameEnd={gameEnd}
+            activeMinusTiles={activeMinusTiles}
+            setActiveMinusTiles={setActiveMinusTiles}
+          />
+        </motion.div>
+        <motion.div
+          className="column right-column"
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          transition={{delay: 0.6}}
+        >
+          <Board
+            board={board}
+            setBoard={setBoard}
+            roundTiles={roundTiles}
+            setRoundTiles={setRoundTiles}
+            gameEnd={gameEnd}
+          />
+        </motion.div>
+        <small onClick={() => setModal(true)} className="version">
+          v1.1
+        </small>
+      </div>
+    </ThemeProvider>
   )
 }
 

@@ -28,7 +28,7 @@ export const StyledFloorTile = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #d9f8ff;
+  background-color: ${props => props.theme.light};
   background-image: url(${overlayImg});
   background-repeat: no-repeat;
   background-position: center;

@@ -14,7 +14,7 @@ export const StyledTile = styled.div`
   font-family: 'Noto Sans', sans-serif;
   font-size: 4rem;
   font-weight: 700;
-  color: #d9f8ff;
+  color: #fff;
 
   img {
     transition: padding 0.21s ease-out;

@@ -28,13 +28,13 @@ export const StyledStats = styled.section`
     }
 
     > div {
-      border: 0.5rem solid #d9f8ff;
+      border: 0.5rem solid ${props => props.theme.light};
       gap: 1rem;
       justify-content: space-between;
     }
 
     > button {
-      background-color: #d9f8ff;
+      background-color: ${props => props.theme.light};
       color: #1c2426;
       justify-content: center;
       transition: all 0.1s ease-out;

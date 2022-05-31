@@ -68,12 +68,8 @@ const Tile = props => {
   }
 
   const handleClick = (_row, _column) => {
-    if (
-      (props.board[_row].find(_tile => _tile === 1) &&
-        props.board[_row][_column] !== 1) ||
-      props.board[_row][_column] > 1
-    ) {
-      return null
+    if (props.board[_row][_column] > 1) {
+      return 0
     } else {
       let updatedBoard = props.board.map((_currentRow, _index) => {
         if (_index === _row) {
@@ -83,7 +79,7 @@ const Tile = props => {
               //console.log(_currentColumn)
               return _currentColumn === 0 ? 1 : 0
             } else {
-              return _currentColumn
+              return _currentColumn > 1 ? _currentColumn : 0
             }
           })
         } else {

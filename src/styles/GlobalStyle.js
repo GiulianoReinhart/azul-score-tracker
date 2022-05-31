@@ -10,10 +10,12 @@ export default createGlobalStyle`${css`
     }
 
     body {
-      background-color: #007ecc;
-      color: #d9f8ff;
+      background-color: ${props => props.theme.main};
+      color: ${props => props.theme.light};
+      transition: all 0.1s ease-out;
 
       .App {
+        position: relative;
         min-height: 100vh;
         display: flex;
         align-items: center;
@@ -27,7 +29,7 @@ export default createGlobalStyle`${css`
           width: 120vw;
           z-index: -10;
           opacity: 0.1;
-          animation: spin 60s linear infinite;
+          animation: spin 200s linear infinite;
 
           @keyframes spin {
             100% {
@@ -53,6 +55,13 @@ export default createGlobalStyle`${css`
         .logo {
           width: 20rem;
           max-width: 100%;
+          vertical-align: top;
+          transition: transform 0.1s ease-out;
+          cursor: pointer;
+
+          :hover {
+            transform: scale(1.05);
+          }
         }
 
         .column {
@@ -80,6 +89,17 @@ export default createGlobalStyle`${css`
           flex: 0 1 clamp(100vh, 50vw, 100vh);
         }
 
+        .version {
+          position: absolute;
+          bottom: 1rem;
+          right: 1rem;
+          cursor: pointer;
+
+          :hover {
+            transform: scale(1.05);
+          }
+        }
+
         @media (max-width: 1023px) {
           flex-direction: column;
 
@@ -101,6 +121,11 @@ export default createGlobalStyle`${css`
 
           .left-column {
             padding-bottom: 1rem;
+          }
+
+          .version {
+            bottom: 0.4rem;
+            right: 3rem;
           }
         }
 
@@ -145,12 +170,23 @@ export default createGlobalStyle`${css`
 
       h2 {
         font-size: 3rem;
+        margin-bottom: 2rem;
       }
 
       strong {
         line-height: 1;
         font-size: 4rem;
         font-weight: 700;
+      }
+
+      ul {
+        list-style: disc;
+        list-style: disc;
+        padding-left: 1.2em;
+
+        li:not(:last-of-type) {
+          margin-bottom: 0.5em;
+        }
       }
 
       @media (max-width: 1023px) {
