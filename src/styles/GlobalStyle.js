@@ -58,6 +58,7 @@ export default createGlobalStyle`${css`
           vertical-align: top;
           transition: transform 0.1s ease-out;
           cursor: pointer;
+          fill: ${props => props.theme.light};
 
           :hover {
             transform: scale(1.05);

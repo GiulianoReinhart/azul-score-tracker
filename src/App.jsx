@@ -1,5 +1,6 @@
 import Stats from './components/Stats/Stats'
 import Board from './components/Board/Board'
+import Tile from './components/Tile/Tile'
 import FloorRow from './components/FloorRow/FloorRow'
 import './styles/reset.scss'
 import {useEffect, useState} from 'react'
@@ -8,13 +9,9 @@ import backgroundImage from './images/background.svg'
 import {motion} from 'framer-motion'
 import UpdateModal from './components/UpdateModal/UpdateModal'
 import {useCookies} from 'react-cookie'
-import styled, {ThemeProvider} from 'styled-components'
+import {ThemeProvider} from 'styled-components'
 import {theme} from './styles/theme'
 import {ReactComponent as SvgLogo} from './images/logo.svg'
-
-const StyledLogo = styled(SvgLogo)`
-  fill: ${props => props.theme.light};
-`
 
 function App() {
   let emptyBoard = []
@@ -22,8 +19,6 @@ function App() {
   for (let i = 0; i < 5; i++) {
     emptyBoard.push([0, 0, 0, 0, 0])
   }
-
-  let version = 1.1
 
   const changeTheme = () => {
     if (themeColour === 4) {
@@ -33,13 +28,13 @@ function App() {
     }
   }
 
-  useEffect(() => console.log(themeColour), [])
   const [themeColour, setThemeColour] = useState(0)
   const [cookies, setCookie] = useCookies(['app'])
   const [modal, setModal] = useState(false)
   const [board, setBoard] = useState(emptyBoard)
   const [roundBoard, setRoundBoard] = useState(emptyBoard)
   const [currentRound, setCurrentRound] = useState(1)
+  const [clickedTile, setClickedTile] = useState(null)
   const [roundTiles, setRoundTiles] = useState([])
   const [totalPoints, setTotalPoints] = useState(0)
   const [roundPoints, setRoundPoints] = useState(0)
@@ -59,12 +54,33 @@ function App() {
   ])
 
   useEffect(() => {
-    if (!cookies['version'] || cookies['version'] != version) {
+    setRoundTiles(() => {
+      let newRoundTiles = board.flatMap((_row, _index) => {
+        let rowCount = _index
+        return _row.flatMap((_tile, _index) => {
+          let columnCount = _index
+          if (_tile === 1) {
+            return [{row: rowCount, column: columnCount}]
+          } else {
+            return []
+          }
+        })
+      })
+
+      return newRoundTiles
+    })
+  }, [board])
+
+  let version = '1.1'
+
+  useEffect(() => {
+    if (!cookies['version'] || cookies['version'] !== version) {
       setModal(true)
     }
   }, [])
 
   useEffect(() => {
+    //console.log(roundTiles)
     if (!gameEnd) {
       recalculatePoints(roundBoard, roundTiles)
     }
@@ -296,7 +312,7 @@ function App() {
           animate={{opacity: 1}}
           transition={{delay: 0.4}}
         >
-          <StyledLogo onClick={changeTheme} className="logo" />
+          <SvgLogo onClick={changeTheme} className="logo" />
           <Stats
             roundPoints={roundPoints}
             minusPoints={minusPoints}
@@ -321,13 +337,29 @@ function App() {
           animate={{opacity: 1}}
           transition={{delay: 0.6}}
         >
-          <Board
-            board={board}
-            setBoard={setBoard}
-            roundTiles={roundTiles}
-            setRoundTiles={setRoundTiles}
-            gameEnd={gameEnd}
-          />
+          <Board gameEnd={gameEnd}>
+            {board.map((_row, _index) => {
+              let rowCount = _index
+
+              return _row.map((_column, _index) => {
+                let columnCount = _index
+
+                return (
+                  <Tile
+                    key={_index}
+                    placed={board[rowCount][columnCount]}
+                    row={rowCount}
+                    column={columnCount}
+                    board={board}
+                    setBoard={setBoard}
+                    roundTiles={roundTiles}
+                    setRoundTiles={setRoundTiles}
+                    setClickedTile={setClickedTile}
+                  />
+                )
+              })
+            })}
+          </Board>
         </motion.div>
         <small onClick={() => setModal(true)} className="version">
           v1.1

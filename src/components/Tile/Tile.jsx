@@ -4,30 +4,15 @@ import tileBlue from '../../images/tile-blue.svg'
 import tileRed from '../../images/tile-red.svg'
 import tileTurquoise from '../../images/tile-turquoise.svg'
 import tileYellow from '../../images/tile-yellow.svg'
-import {useState, useEffect} from 'react'
+import {useEffect} from 'react'
 
 const Tile = props => {
   let tilePosition = props.row * 5 + props.column
   let imgSrc
 
   useEffect(() => {
-    props.setRoundTiles(() => {
-      if (props.placed === 0) {
-        return props.roundTiles.filter((_currentTile, _index) => {
-          return (
-            _currentTile.row !== props.row ||
-            _currentTile.column !== props.column
-          )
-        })
-      } else if (props.placed === 1) {
-        return [...props.roundTiles, {row: props.row, column: props.column}]
-      } else {
-        return [...props.roundTiles]
-      }
-    })
+    props.setClickedTile({row: props.row, column: props.column})
   }, [props.placed])
-
-  useEffect(() => {}, [props.board])
 
   switch (tilePosition) {
     case 3:
