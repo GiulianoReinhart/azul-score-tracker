@@ -4,15 +4,10 @@ import tileBlue from '../../images/tile-blue.svg'
 import tileRed from '../../images/tile-red.svg'
 import tileTurquoise from '../../images/tile-turquoise.svg'
 import tileYellow from '../../images/tile-yellow.svg'
-import {useEffect} from 'react'
 
 const Tile = props => {
   let tilePosition = props.row * 5 + props.column
   let imgSrc
-
-  useEffect(() => {
-    props.setClickedTile({row: props.row, column: props.column})
-  }, [props.placed])
 
   switch (tilePosition) {
     case 3:

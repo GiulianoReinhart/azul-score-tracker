@@ -90,14 +90,22 @@ export default createGlobalStyle`${css`
           flex: 0 1 clamp(100vh, 50vw, 100vh);
         }
 
-        .version {
+        footer {
           position: absolute;
           bottom: 1rem;
           right: 1rem;
-          cursor: pointer;
+          display: flex;
+          gap: 2rem;
 
-          :hover {
-            transform: scale(1.05);
+          a,
+          small {
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.1s ease-out;
+
+            :hover {
+              transform: scale(1.05);
+            }
           }
         }
 
@@ -124,7 +132,7 @@ export default createGlobalStyle`${css`
             padding-bottom: 1rem;
           }
 
-          .version {
+          footer {
             bottom: 0.4rem;
             right: 3rem;
           }
@@ -159,10 +167,6 @@ export default createGlobalStyle`${css`
       h2 {
         line-height: 1.2;
         font-weight: 700;
-      }
-
-      a {
-        color: #007ecc;
       }
 
       h1 {

@@ -34,7 +34,6 @@ function App() {
   const [board, setBoard] = useState(emptyBoard)
   const [roundBoard, setRoundBoard] = useState(emptyBoard)
   const [currentRound, setCurrentRound] = useState(1)
-  const [clickedTile, setClickedTile] = useState(null)
   const [roundTiles, setRoundTiles] = useState([])
   const [totalPoints, setTotalPoints] = useState(0)
   const [roundPoints, setRoundPoints] = useState(0)
@@ -354,16 +353,22 @@ function App() {
                     setBoard={setBoard}
                     roundTiles={roundTiles}
                     setRoundTiles={setRoundTiles}
-                    setClickedTile={setClickedTile}
                   />
                 )
               })
             })}
           </Board>
         </motion.div>
-        <small onClick={() => setModal(true)} className="version">
-          v1.1
-        </small>
+        <footer>
+          <a
+            href="https://twitter.com/messages/compose?recipient_id=1405559022611320835"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Report bug
+          </a>
+          <small onClick={() => setModal(true)}>v1.1</small>
+        </footer>
       </div>
     </ThemeProvider>
   )
