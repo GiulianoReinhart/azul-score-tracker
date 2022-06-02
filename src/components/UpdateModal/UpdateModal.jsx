@@ -4,10 +4,10 @@ import {useTheme} from 'styled-components'
 
 const UpdateModal = props => {
   const theme = useTheme()
-  props.setCookie('version', props.version, {path: '/'})
 
   const closeModal = () => {
     props.setModal(false)
+    props.setCookie('version', props.version, {path: '/'})
   }
 
   return (

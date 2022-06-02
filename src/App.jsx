@@ -70,7 +70,7 @@ function App() {
     })
   }, [board])
 
-  let version = '1.1'
+  let version = '1.2'
 
   useEffect(() => {
     if (!cookies['version'] || cookies['version'] !== version) {
@@ -367,7 +367,7 @@ function App() {
           >
             Report bug
           </a>
-          <small onClick={() => setModal(true)}>v1.1</small>
+          <small onClick={() => setModal(true)}>v1.2</small>
         </footer>
       </div>
     </ThemeProvider>
