@@ -12,8 +12,10 @@ import {useCookies} from 'react-cookie'
 import {ThemeProvider} from 'styled-components'
 import {theme} from './styles/theme'
 import {ReactComponent as SvgLogo} from './images/logo.svg'
+import CacheBuster from 'react-cache-buster'
 
 function App() {
+  let appVersion = '1.2'
   let emptyBoard = []
 
   for (let i = 0; i < 5; i++) {
@@ -70,10 +72,8 @@ function App() {
     })
   }, [board])
 
-  let version = '1.2'
-
   useEffect(() => {
-    if (!cookies['version'] || cookies['version'] !== version) {
+    if (!cookies['version'] || cookies['version'] !== appVersion) {
       setModal(true)
     }
   }, [])
@@ -285,92 +285,98 @@ function App() {
   }
 
   return (
-    <ThemeProvider theme={theme[themeColour]}>
-      <div className="App">
-        <GlobalStyle themeColour={themeColour} />
-        {modal && (
-          <UpdateModal
-            version={version}
-            setCookie={setCookie}
-            modal={modal}
-            setModal={setModal}
-            themeColour={themeColour}
-          />
-        )}
-        <motion.img
-          className="bg-image"
-          src={backgroundImage}
-          alt=""
-          initial={{opacity: 0}}
-          animate={{opacity: 0.1}}
-          transition={{delay: 0.2}}
-        ></motion.img>
-        <motion.div
-          className="column left-column"
-          initial={{opacity: 0}}
-          animate={{opacity: 1}}
-          transition={{delay: 0.4}}
-        >
-          <SvgLogo onClick={changeTheme} className="logo" />
-          <Stats
-            roundPoints={roundPoints}
-            minusPoints={minusPoints}
-            totalPoints={totalPoints}
-            currentRound={currentRound}
-            incrementRound={incrementRound}
-            endGame={endGame}
-            gameEnd={gameEnd}
-            fullRows={fullRows}
-            fullColumns={fullColumns}
-            fullColours={fullColours}
-          />
-          <FloorRow
-            gameEnd={gameEnd}
-            activeMinusTiles={activeMinusTiles}
-            setActiveMinusTiles={setActiveMinusTiles}
-          />
-        </motion.div>
-        <motion.div
-          className="column right-column"
-          initial={{opacity: 0}}
-          animate={{opacity: 1}}
-          transition={{delay: 0.6}}
-        >
-          <Board gameEnd={gameEnd}>
-            {board.map((_row, _index) => {
-              let rowCount = _index
-
-              return _row.map((_column, _index) => {
-                let columnCount = _index
-
-                return (
-                  <Tile
-                    key={_index}
-                    placed={board[rowCount][columnCount]}
-                    row={rowCount}
-                    column={columnCount}
-                    board={board}
-                    setBoard={setBoard}
-                    roundTiles={roundTiles}
-                    setRoundTiles={setRoundTiles}
-                  />
-                )
-              })
-            })}
-          </Board>
-        </motion.div>
-        <footer>
-          <a
-            href="https://twitter.com/messages/compose?recipient_id=1405559022611320835"
-            target="_blank"
-            rel="noreferrer"
+    <CacheBuster
+      currentVersion={appVersion}
+      isEnabled={true}
+      isVerboseMode={false}
+    >
+      <ThemeProvider theme={theme[themeColour]}>
+        <div className="App">
+          <GlobalStyle themeColour={themeColour} />
+          {modal && (
+            <UpdateModal
+              version={appVersion}
+              setCookie={setCookie}
+              modal={modal}
+              setModal={setModal}
+              themeColour={themeColour}
+            />
+          )}
+          <motion.img
+            className="bg-image"
+            src={backgroundImage}
+            alt=""
+            initial={{opacity: 0}}
+            animate={{opacity: 0.1}}
+            transition={{delay: 0.2}}
+          ></motion.img>
+          <motion.div
+            className="column left-column"
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            transition={{delay: 0.4}}
           >
-            Report bug
-          </a>
-          <small onClick={() => setModal(true)}>v1.2</small>
-        </footer>
-      </div>
-    </ThemeProvider>
+            <SvgLogo onClick={changeTheme} className="logo" />
+            <Stats
+              roundPoints={roundPoints}
+              minusPoints={minusPoints}
+              totalPoints={totalPoints}
+              currentRound={currentRound}
+              incrementRound={incrementRound}
+              endGame={endGame}
+              gameEnd={gameEnd}
+              fullRows={fullRows}
+              fullColumns={fullColumns}
+              fullColours={fullColours}
+            />
+            <FloorRow
+              gameEnd={gameEnd}
+              activeMinusTiles={activeMinusTiles}
+              setActiveMinusTiles={setActiveMinusTiles}
+            />
+          </motion.div>
+          <motion.div
+            className="column right-column"
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            transition={{delay: 0.6}}
+          >
+            <Board gameEnd={gameEnd}>
+              {board.map((_row, _index) => {
+                let rowCount = _index
+
+                return _row.map((_column, _index) => {
+                  let columnCount = _index
+
+                  return (
+                    <Tile
+                      key={_index}
+                      placed={board[rowCount][columnCount]}
+                      row={rowCount}
+                      column={columnCount}
+                      board={board}
+                      setBoard={setBoard}
+                      roundTiles={roundTiles}
+                      setRoundTiles={setRoundTiles}
+                    />
+                  )
+                })
+              })}
+            </Board>
+          </motion.div>
+          <footer>
+            <a
+              href="https://twitter.com/messages/compose?recipient_id=1405559022611320835"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Report bug
+            </a>
+            <small onClick={() => setModal(true)}>v1.2</small>
+          </footer>
+        </div>
+      </ThemeProvider>
+    </CacheBuster>
   )
 }
 
