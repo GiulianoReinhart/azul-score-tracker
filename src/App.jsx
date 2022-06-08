@@ -449,7 +449,7 @@ function App() {
             >
               Report bug
             </a>
-            <small onClick={() => setModal(true)}>v1.2</small>
+            <small onClick={() => setModal(true)}>v{appVersion}</small>
           </footer>
         </div>
       </ThemeProvider>
