@@ -21,8 +21,8 @@ const UpdateModal = props => {
             warning, second click clears everything.
           </li>
           <li>
-            Refreshing the page won’t clear your data anymore, now everything’s
-            stored in a cookie.
+            Refreshing the page won’t clear your data (or theme), now
+            everything’s stored in a cookie.
           </li>
           <li>Small visual adjustments</li>
         </ul>

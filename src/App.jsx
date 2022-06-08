@@ -57,6 +57,7 @@ function App() {
 
   useEffect(() => {
     let currentGame = {
+      themeColour: themeColour,
       board: board,
       roundBoard: roundBoard,
       currentRound: currentRound,
@@ -72,6 +73,7 @@ function App() {
 
     setCookie('currentGame', JSON.stringify(currentGame), {path: '/'})
   }, [
+    themeColour,
     board,
     roundBoard,
     currentRound,
@@ -140,6 +142,7 @@ function App() {
     if (cookies['currentGame']) {
       let previousGame = cookies['currentGame']
 
+      setThemeColour(previousGame.themeColour)
       setBoard(previousGame.board)
       setRoundBoard(previousGame.roundBoard)
       setCurrentRound(previousGame.currentRound)
