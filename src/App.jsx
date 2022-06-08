@@ -142,7 +142,7 @@ function App() {
     if (cookies['currentGame']) {
       let previousGame = cookies['currentGame']
 
-      setThemeColour(previousGame.themeColour)
+      'themeColour' in previousGame && setThemeColour(previousGame.themeColour)
       setBoard(previousGame.board)
       setRoundBoard(previousGame.roundBoard)
       setCurrentRound(previousGame.currentRound)
@@ -370,14 +370,13 @@ function App() {
     >
       <ThemeProvider theme={theme[themeColour]}>
         <div className="App">
-          <GlobalStyle themeColour={themeColour} />
+          <GlobalStyle />
           {modal && (
             <UpdateModal
               version={appVersion}
               setCookie={setCookie}
               modal={modal}
               setModal={setModal}
-              themeColour={themeColour}
             />
           )}
           <motion.img
