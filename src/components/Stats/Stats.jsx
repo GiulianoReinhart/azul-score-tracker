@@ -67,6 +67,9 @@ const Stats = props => {
               <p>Total points</p>
               <strong>{props.totalPoints}</strong>
             </div>
+            <button className="back-to-game-button" onClick={props.backToGame}>
+              Back
+            </button>
             <button className="new-game-button" onClick={props.resetGame}>
               New Game
             </button>

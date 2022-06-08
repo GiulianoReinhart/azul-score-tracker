@@ -24,6 +24,9 @@ const UpdateModal = props => {
             Refreshing the page won’t clear your data (or theme), now
             everything’s stored in a cookie.
           </li>
+          <li>
+            Finishing a game can now be undone by clicking on the back button.
+          </li>
           <li>Small visual adjustments</li>
         </ul>
         <h2>Version 1.2</h2>

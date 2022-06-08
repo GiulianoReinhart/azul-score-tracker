@@ -38,6 +38,7 @@ function App() {
   const [currentRound, setCurrentRound] = useState(1)
   const [roundTiles, setRoundTiles] = useState([])
   const [totalPoints, setTotalPoints] = useState(0)
+  const [lastRoundTotal, setLastRoundTotal] = useState(0)
   const [roundPoints, setRoundPoints] = useState(0)
   const [gameEnd, setGameEnd] = useState(false)
   const [fullRows, setFullRows] = useState(0)
@@ -114,6 +115,15 @@ function App() {
     } else {
       setResetWarning(true)
     }
+  }
+
+  const backToGame = () => {
+    setGameEnd(false)
+    unlockBoard()
+    setTotalPoints(lastRoundTotal)
+    setFullRows(0)
+    setFullColumns(0)
+    setFullColours(0)
   }
 
   useEffect(() => {
@@ -261,12 +271,12 @@ function App() {
     }
   }
 
-  const lockBoard = _roundNumber => {
+  const lockBoard = () => {
     let lockedBoard = board.map(_currentRow => {
       return _currentRow.map(_currentColumn => {
         if (_currentColumn === 1) {
           //console.log(_currentColumn)
-          return (_currentColumn = _roundNumber + 1)
+          return (_currentColumn = currentRound + 1)
         } else {
           return _currentColumn
         }
@@ -276,8 +286,23 @@ function App() {
     setBoard(lockedBoard)
   }
 
+  const unlockBoard = () => {
+    let unlockedBoard = board.map(_currentRow => {
+      return _currentRow.map(_currentColumn => {
+        if (_currentColumn === currentRound + 1) {
+          //console.log(_currentColumn)
+          return (_currentColumn = 1)
+        } else {
+          return _currentColumn
+        }
+      })
+    })
+
+    setBoard(unlockedBoard)
+  }
+
   const incrementRound = () => {
-    lockBoard(currentRound)
+    lockBoard()
     setCurrentRound(_prevRound => _prevRound + 1)
     setRoundBoard(board)
     setRoundTiles([])
@@ -342,6 +367,7 @@ function App() {
     checkForFullColour(turquoiseTiles)
     checkForFullColour(yellowTiles)
 
+    setLastRoundTotal(totalPoints)
     setTotalPoints(_prevTotalPoints => {
       let finalPoints =
         _prevTotalPoints +
@@ -357,9 +383,6 @@ function App() {
 
       return finalPoints
     })
-
-    setMinusPoints(0)
-    setRoundPoints(0)
   }
 
   return (
@@ -406,6 +429,7 @@ function App() {
               fullColumns={fullColumns}
               fullColours={fullColours}
               resetGame={resetGame}
+              backToGame={backToGame}
               resetWarning={resetWarning}
             />
             <FloorRow

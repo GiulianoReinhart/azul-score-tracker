@@ -92,14 +92,11 @@ export const StyledStats = styled.section`
       &.new-game-button {
         animation: ${props => (props.resetWarning ? 'shake 0.5s' : 'none')};
         animation-iteration-count: infinite;
-      }
-
-      &.reset-button {
         grid-column: span 2;
       }
 
-      &.new-game-button {
-        grid-column: span 3;
+      &.back-to-game-button {
+        grid-column: span 1;
       }
 
       :hover {
