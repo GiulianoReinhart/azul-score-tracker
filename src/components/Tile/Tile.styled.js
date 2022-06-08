@@ -11,7 +11,6 @@ export const StyledTile = styled.div`
   border-radius: 0.5rem;
   overflow: hidden;
   vertical-align: top;
-  font-family: 'Noto Sans', sans-serif;
   font-size: 4rem;
   font-weight: 700;
   color: #fff;

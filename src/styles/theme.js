@@ -9,14 +9,14 @@ export const theme = [
   },
   {
     main: '#1c2426',
-    light: '#dcf8ff'
-  },
-  {
-    main: '#fcbc1e',
-    light: '#fffadc'
+    light: '#ffffff'
   },
   {
     main: '#043369',
     light: '#dceeff'
+  },
+  {
+    main: '#fcbc1e',
+    light: '#fffadc'
   }
 ]

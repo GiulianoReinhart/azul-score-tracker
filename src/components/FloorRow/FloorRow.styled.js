@@ -36,7 +36,6 @@ export const StyledFloorTile = styled.div`
   border-radius: 1rem;
   transition: all 0.1s ease-out;
   cursor: pointer;
-  font-family: 'Noto Sans', sans-serif;
   color: #1c2426;
   font-weight: 700;
   //opacity: 0.3;

@@ -36,6 +36,10 @@ export const StyledUpdateModal = styled.div`
     overflow: auto;
     border-radius: 1rem;
 
+    h2:not(:first-child) {
+      margin-top: 2em;
+    }
+
     @media (max-width: 767px) {
       width: calc(100% - 4rem);
     }

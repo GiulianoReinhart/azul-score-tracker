@@ -3,7 +3,7 @@ import {motion, AnimatePresence} from 'framer-motion'
 
 const Stats = props => {
   return (
-    <StyledStats gameEnd={props.gameEnd}>
+    <StyledStats gameEnd={props.gameEnd} resetWarning={props.resetWarning}>
       <AnimatePresence initial={false} exitBeforeEnter>
         {!props.gameEnd ? (
           <motion.div
@@ -30,6 +30,9 @@ const Stats = props => {
             </div>
             <button onClick={props.incrementRound}>Next round</button>
             <button onClick={props.endGame}>Finish game</button>
+            <button className="reset-button" onClick={props.resetGame}>
+              Reset
+            </button>
           </motion.div>
         ) : (
           <motion.div
@@ -64,6 +67,9 @@ const Stats = props => {
               <p>Total points</p>
               <strong>{props.totalPoints}</strong>
             </div>
+            <button className="new-game-button" onClick={props.resetGame}>
+              New Game
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

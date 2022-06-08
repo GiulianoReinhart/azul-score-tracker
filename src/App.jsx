@@ -15,7 +15,7 @@ import {ReactComponent as SvgLogo} from './images/logo.svg'
 import CacheBuster from 'react-cache-buster'
 
 function App() {
-  let appVersion = '1.2'
+  let appVersion = '1.3'
   let emptyBoard = []
 
   for (let i = 0; i < 5; i++) {
@@ -53,6 +53,66 @@ function App() {
     false,
     false
   ])
+  const [resetWarning, setResetWarning] = useState(false)
+
+  useEffect(() => {
+    let currentGame = {
+      board: board,
+      roundBoard: roundBoard,
+      currentRound: currentRound,
+      roundTiles: roundTiles,
+      totalPoints: totalPoints,
+      roundPoints: roundPoints,
+      gameEnd: gameEnd,
+      fullRows: fullRows,
+      fullColours: fullColours,
+      minusPoints: minusPoints,
+      activeMinusTiles: activeMinusTiles
+    }
+
+    setCookie('currentGame', JSON.stringify(currentGame), {path: '/'})
+  }, [
+    board,
+    roundBoard,
+    currentRound,
+    roundTiles,
+    totalPoints,
+    roundPoints,
+    gameEnd,
+    fullRows,
+    fullColours,
+    minusPoints,
+    activeMinusTiles
+  ])
+
+  useEffect(() => {
+    if (resetWarning) {
+      const timer = setTimeout(() => {
+        setResetWarning(false)
+      }, 2000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [resetWarning])
+
+  const resetGame = () => {
+    if (resetWarning) {
+      setResetWarning(false)
+      setBoard(emptyBoard)
+      setRoundBoard(emptyBoard)
+      setCurrentRound(1)
+      setRoundTiles([])
+      setTotalPoints(0)
+      setRoundPoints(0)
+      setGameEnd(false)
+      setFullRows(0)
+      setFullColours(0)
+      setMinusPoints(0)
+      setActiveMinusTiles([false, false, false, false, false, false, false])
+    } else {
+      setResetWarning(true)
+    }
+  }
 
   useEffect(() => {
     setRoundTiles(() => {
@@ -76,10 +136,25 @@ function App() {
     if (!cookies['version'] || cookies['version'] !== appVersion) {
       setModal(true)
     }
+
+    if (cookies['currentGame']) {
+      let previousGame = cookies['currentGame']
+
+      setBoard(previousGame.board)
+      setRoundBoard(previousGame.roundBoard)
+      setCurrentRound(previousGame.currentRound)
+      setRoundTiles(previousGame.roundTiles)
+      setTotalPoints(previousGame.totalPoints)
+      setRoundPoints(previousGame.roundPoints)
+      setGameEnd(previousGame.gameEnd)
+      setFullRows(previousGame.fullRows)
+      setFullColours(previousGame.fullColours)
+      setMinusPoints(previousGame.MinusPoints)
+      setActiveMinusTiles(previousGame.activeMinusTiles)
+    }
   }, [])
 
   useEffect(() => {
-    //console.log(roundTiles)
     if (!gameEnd) {
       recalculatePoints(roundBoard, roundTiles)
     }
@@ -328,6 +403,8 @@ function App() {
               fullRows={fullRows}
               fullColumns={fullColumns}
               fullColours={fullColours}
+              resetGame={resetGame}
+              resetWarning={resetWarning}
             />
             <FloorRow
               gameEnd={gameEnd}
