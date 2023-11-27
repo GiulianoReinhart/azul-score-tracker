@@ -18,7 +18,7 @@ export const StyledUpdateModal = styled.div`
     cursor: pointer;
     transition: transform 0.1s ease-out;
 
-    :hover {
+    &:hover {
       transform: scale(0.8);
     }
   }

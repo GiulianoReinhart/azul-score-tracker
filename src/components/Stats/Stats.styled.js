@@ -99,7 +99,7 @@ export const StyledStats = styled.section`
         grid-column: span 1;
       }
 
-      :hover {
+      &:hover {
         transform: scale(1.05);
       }
     }

@@ -19,7 +19,7 @@ export const StyledTile = styled.div`
     transition: padding 0.21s ease-out;
   }
 
-  :hover {
+  &:hover {
     transform: scale(${props => (props.$placed > 1 ? 1 : 1.05)});
   }
 

@@ -60,7 +60,7 @@ export default createGlobalStyle`${css`
           cursor: pointer;
           fill: ${props => props.theme.light};
 
-          :hover {
+          &:hover {
             transform: scale(1.05);
           }
         }
@@ -103,7 +103,7 @@ export default createGlobalStyle`${css`
             cursor: pointer;
             transition: transform 0.1s ease-out;
 
-            :hover {
+            &:hover {
               transform: scale(1.05);
             }
           }

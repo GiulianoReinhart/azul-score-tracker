@@ -40,7 +40,7 @@ export const StyledFloorTile = styled.div`
   font-weight: 700;
   //opacity: 0.3;
 
-  :hover {
+  &:hover {
     transform: scale(1.05);
   }
 `
