@@ -1,9 +1,9 @@
-import {StyledTile} from './Tile.styled'
 import tileBlack from '../../images/tile-black.svg'
 import tileBlue from '../../images/tile-blue.svg'
 import tileRed from '../../images/tile-red.svg'
 import tileTurquoise from '../../images/tile-turquoise.svg'
 import tileYellow from '../../images/tile-yellow.svg'
+import {StyledTile} from './Tile.styled'
 
 const Tile = props => {
   let tilePosition = props.row * 5 + props.column
@@ -73,8 +73,8 @@ const Tile = props => {
 
   return (
     <StyledTile
-      currentRound={props.board[props.row][props.column] - 1}
-      placed={props.placed}
+      $currentRound={props.board[props.row][props.column] - 1}
+      $placed={props.placed}
       onClick={() => handleClick(props.row, props.column)}
     >
       <img title={props.placed} src={imgSrc} alt="" draggable="false" />

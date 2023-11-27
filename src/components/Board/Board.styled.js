@@ -6,7 +6,7 @@ export const StyledBoard = styled.div`
   gap: 1rem;
   width: 100%;
   height: auto;
-  pointer-events: ${props => (props.gameEnd ? 'none' : 'auto')};
+  pointer-events: ${props => (props.$gameEnd ? 'none' : 'auto')};
   background: ${props => props.theme.light};
   padding: 1rem;
   border-radius: 1rem;

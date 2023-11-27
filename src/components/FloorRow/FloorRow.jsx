@@ -23,14 +23,13 @@ const FloorRow = props => {
   }
 
   return (
-    <StyledFloorRow gameEnd={props.gameEnd}>
+    <StyledFloorRow $gameEnd={props.gameEnd}>
       <p>Minus Points</p>
       <div className="floor-row-wrapper">
         {minusPointArray.map((item, index) => (
           <StyledFloorTile
             key={index}
-            active={props.activeMinusTiles[index]}
-            tileCount={index}
+            $active={props.activeMinusTiles[index]}
             onClick={() => {
               updateActiveTiles(index)
             }}

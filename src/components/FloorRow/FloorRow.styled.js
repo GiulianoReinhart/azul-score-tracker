@@ -13,7 +13,7 @@ export const StyledFloorRow = styled.div`
   .floor-row-wrapper {
     display: flex;
     gap: 2rem;
-    pointer-events: ${props => (props.gameEnd ? 'none' : 'auto')};
+    pointer-events: ${props => (props.$gameEnd ? 'none' : 'auto')};
 
     @media (max-width: 1023px) {
       justify-content: center;
@@ -32,7 +32,7 @@ export const StyledFloorTile = styled.div`
   background-image: url(${overlayImg});
   background-repeat: no-repeat;
   background-position: center;
-  background-size: ${props => (props.active ? '100%' : '250%')};
+  background-size: ${props => (props.$active ? '100%' : '250%')};
   border-radius: 1rem;
   transition: all 0.1s ease-out;
   cursor: pointer;

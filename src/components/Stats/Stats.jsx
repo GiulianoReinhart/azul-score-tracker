@@ -1,24 +1,15 @@
+import {AnimatePresence, motion} from 'framer-motion'
 import {StyledStats} from './Stats.styled'
-import {motion, AnimatePresence} from 'framer-motion'
 
 const Stats = props => {
   return (
-    <StyledStats gameEnd={props.gameEnd} resetWarning={props.resetWarning}>
-      <AnimatePresence initial={false} exitBeforeEnter>
+    <StyledStats $resetWarning={props.resetWarning}>
+      <AnimatePresence initial={false} mode="wait">
         {!props.gameEnd ? (
-          <motion.div
-            key="during-game"
-            initial={{opacity: 0}}
-            animate={{opacity: 1}}
-            exit={{opacity: 0}}
-          >
+          <motion.div key="during-game" initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
             <div>
               <p>Round Points</p>
-              <strong>
-                {props.roundPoints + props.minusPoints < 0
-                  ? 0
-                  : props.roundPoints + props.minusPoints}
-              </strong>
+              <strong>{props.roundPoints + props.minusPoints < 0 ? 0 : props.roundPoints + props.minusPoints}</strong>
             </div>
             <div>
               <p>Current Round</p>
@@ -56,12 +47,7 @@ const Stats = props => {
             </div>
             <div>
               <p>Round Points</p>
-              <strong>
-                {props.totalPoints -
-                  props.fullRows * 2 -
-                  props.fullColumns * 7 -
-                  props.fullColours * 10}
-              </strong>
+              <strong>{props.totalPoints - props.fullRows * 2 - props.fullColumns * 7 - props.fullColours * 10}</strong>
             </div>
             <div className="double-size">
               <p>Total points</p>

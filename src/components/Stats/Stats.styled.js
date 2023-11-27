@@ -90,7 +90,7 @@ export const StyledStats = styled.section`
 
       &.reset-button,
       &.new-game-button {
-        animation: ${props => (props.resetWarning ? 'shake 0.5s' : 'none')};
+        animation: ${props => (props.$resetWarning ? 'shake 0.5s' : 'none')};
         animation-iteration-count: infinite;
         grid-column: span 2;
       }
