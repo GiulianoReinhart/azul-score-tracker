@@ -1,18 +1,18 @@
-import Stats from './components/Stats/Stats'
-import Board from './components/Board/Board'
-import Tile from './components/Tile/Tile'
-import FloorRow from './components/FloorRow/FloorRow'
-import './styles/reset.scss'
-import {useEffect, useState} from 'react'
-import GlobalStyle from './styles/GlobalStyle'
-import backgroundImage from './images/background.svg'
 import {motion} from 'framer-motion'
-import UpdateModal from './components/UpdateModal/UpdateModal'
+import {useEffect, useState} from 'react'
+import CacheBuster from 'react-cache-buster'
 import {useCookies} from 'react-cookie'
 import {ThemeProvider} from 'styled-components'
-import {theme} from './styles/theme'
+import Board from './components/Board/Board'
+import FloorRow from './components/FloorRow/FloorRow'
+import Stats from './components/Stats/Stats'
+import Tile from './components/Tile/Tile'
+import UpdateModal from './components/UpdateModal/UpdateModal'
+import backgroundImage from './images/background.svg'
 import {ReactComponent as SvgLogo} from './images/logo.svg'
-import CacheBuster from 'react-cache-buster'
+import GlobalStyle from './styles/GlobalStyle'
+import './styles/reset.scss'
+import {theme} from './styles/theme'
 
 function App() {
   let appVersion = '1.3'
@@ -45,15 +45,7 @@ function App() {
   const [fullColumns, setFullColumns] = useState(0)
   const [fullColours, setFullColours] = useState(0)
   const [minusPoints, setMinusPoints] = useState(0)
-  const [activeMinusTiles, setActiveMinusTiles] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ])
+  const [activeMinusTiles, setActiveMinusTiles] = useState([false, false, false, false, false, false, false])
   const [resetWarning, setResetWarning] = useState(false)
 
   useEffect(() => {
@@ -175,10 +167,7 @@ function App() {
 
   useEffect(() => {
     if (gameEnd) {
-      setTotalPoints(
-        _prevTotalPoints =>
-          _prevTotalPoints + fullRows * 2 + fullColumns * 7 + fullColours * 10
-      )
+      setTotalPoints(_prevTotalPoints => _prevTotalPoints + fullRows * 2 + fullColumns * 7 + fullColours * 10)
     }
   }, [gameEnd])
 
@@ -228,12 +217,8 @@ function App() {
       return 0
     }
 
-    let rowPoints =
-      checkConections(_board, _row, _column, 0, 1) +
-      checkConections(_board, _row, _column, 0, -1)
-    let columnPoints =
-      checkConections(_board, _row, _column, -1, 0) +
-      checkConections(_board, _row, _column, 1, 0)
+    let rowPoints = checkConections(_board, _row, _column, 0, 1) + checkConections(_board, _row, _column, 0, -1)
+    let columnPoints = checkConections(_board, _row, _column, -1, 0) + checkConections(_board, _row, _column, 1, 0)
 
     //console.log('rowPoints: ' + rowPoints)
     //console.log('columnPoints: ' + columnPoints)
@@ -257,15 +242,7 @@ function App() {
     }
 
     if (_board[target_row][target_column]) {
-      return (
-        checkConections(
-          _board,
-          target_row,
-          target_column,
-          _incrRow,
-          _incrColumn
-        ) + 1
-      )
+      return checkConections(_board, target_row, target_column, _incrRow, _incrColumn) + 1
     } else {
       return 0
     }
@@ -320,9 +297,7 @@ function App() {
 
   const checkForFullRow = _row => {
     setFullRows(_prevFullRows =>
-      board[_row].find(_tile => _tile === 0) === undefined
-        ? _prevFullRows + 1
-        : _prevFullRows
+      board[_row].find(_tile => _tile === 0) === undefined ? _prevFullRows + 1 : _prevFullRows
     )
   }
 
@@ -369,13 +344,7 @@ function App() {
 
     setLastRoundTotal(totalPoints)
     setTotalPoints(_prevTotalPoints => {
-      let finalPoints =
-        _prevTotalPoints +
-        roundPoints +
-        fullRows +
-        fullColumns +
-        fullColours +
-        minusPoints
+      let finalPoints = _prevTotalPoints + roundPoints + fullRows + fullColumns + fullColours + minusPoints
 
       if (finalPoints < 0) {
         return 0
@@ -386,22 +355,11 @@ function App() {
   }
 
   return (
-    <CacheBuster
-      currentVersion={appVersion}
-      isEnabled={true}
-      isVerboseMode={false}
-    >
+    <CacheBuster currentVersion={appVersion} isEnabled={true} isVerboseMode={false}>
       <ThemeProvider theme={theme[themeColour]}>
         <div className="App">
           <GlobalStyle />
-          {modal && (
-            <UpdateModal
-              version={appVersion}
-              setCookie={setCookie}
-              modal={modal}
-              setModal={setModal}
-            />
-          )}
+          {modal && <UpdateModal version={appVersion} setCookie={setCookie} modal={modal} setModal={setModal} />}
           <motion.img
             className="bg-image"
             src={backgroundImage}
@@ -432,11 +390,7 @@ function App() {
               backToGame={backToGame}
               resetWarning={resetWarning}
             />
-            <FloorRow
-              gameEnd={gameEnd}
-              activeMinusTiles={activeMinusTiles}
-              setActiveMinusTiles={setActiveMinusTiles}
-            />
+            <FloorRow gameEnd={gameEnd} activeMinusTiles={activeMinusTiles} setActiveMinusTiles={setActiveMinusTiles} />
           </motion.div>
           <motion.div
             className="column right-column"
@@ -468,11 +422,7 @@ function App() {
             </Board>
           </motion.div>
           <footer>
-            <a
-              href="https://twitter.com/messages/compose?recipient_id=1405559022611320835"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href="https://www.reddit.com/user/bragae" target="_blank" rel="noreferrer">
               Report bug
             </a>
             <small onClick={() => setModal(true)}>v{appVersion}</small>
